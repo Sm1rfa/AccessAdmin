@@ -1,0 +1,26 @@
+﻿<controls:MetroWindow x:Class="AccessAdmin.Client.Windows.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AccessAdmin.Client.Windows"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        Title="Login" Height="200" Width="300"
+                      WindowStartupLocation="CenterScreen"
+                      BorderBrush="LimeGreen"
+                      BorderThickness="1">
+    <Grid>
+        <TextBox x:Name="MailBox" 
+                 controls:TextBoxHelper.Watermark="Email i.e. admin@admin.com"
+                 HorizontalAlignment="Left" Height="23" Margin="31,25,0,0" 
+                 TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="234"/>
+        <TextBox x:Name="PasswordBox" 
+                 controls:TextBoxHelper.Watermark="Password"
+                 HorizontalAlignment="Left" Height="23" Margin="31,63,0,0" 
+                 TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="234"/>
+        <Button Content="Login" Click="Login_Click" HorizontalAlignment="Left" Margin="190,110,0,0" VerticalAlignment="Top" Width="75"/>
+
+    </Grid>
+</controls:MetroWindow>
+
