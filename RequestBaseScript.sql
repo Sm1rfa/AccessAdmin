@@ -25,19 +25,19 @@ create table RequestStates (
 )
 
 create table UserSystems (
-	UserSystemId int identity(1, 1) not null,
+	UserSystemId int identity(1, 1) not null primary key,
 	UserId int not null foreign key references Users(UserId),
 	SystemId int not null foreign key references Systems(SystemId)
 )
 
 create table UserRoles (
-	UserRoleId int identity(1, 1) not null,
+	UserRoleId int identity(1, 1) not null primary key,
 	UserId int not null foreign key references Users(UserId),
 	RoleId int not null foreign key references Roles(RoleId)
 )
 
 create table SystemRoles (
-	SystemRoleId int identity(1, 1) not null,
+	SystemRoleId int identity(1, 1) not null primary key,
 	SystemId int not null foreign key references Systems(SystemId),
 	RoleId int not null foreign key references Roles(RoleId)
 )
