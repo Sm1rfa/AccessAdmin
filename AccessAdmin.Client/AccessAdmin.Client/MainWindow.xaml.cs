@@ -28,7 +28,7 @@ namespace AccessAdmin.Client
 
             var helper = new UserHelper();
 
-            var admin = helper.IsUserAdmin(AdminHelper.AdminMail).Result;
+            var admin = helper.IsUserAdmin(AdminHelper.UserMail).Result;
             if (admin)
             {
                 this.AdminTab.Visibility = Visibility.Visible;

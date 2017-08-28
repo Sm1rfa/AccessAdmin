@@ -2,6 +2,7 @@
 using AccessAdmin.Client.BusinessLogic;
 using AccessAdmin.Client.Model;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace AccessAdmin.Client.ViewModel
 {
@@ -13,6 +14,9 @@ namespace AccessAdmin.Client.ViewModel
         private Roles selectedRole;
         private ObservableCollection<Systems> sysList;
         private ObservableCollection<Roles> roleList;
+        private string reasonBox;
+
+        public RelayCommand RequestCommand { get; set; }
 
         public UserViewModel()
         {
@@ -21,6 +25,8 @@ namespace AccessAdmin.Client.ViewModel
 
             this.SystemsList = this.sysHelper.GetSystems().Result;
             this.RolesList = this.roleHelper.GetAllRoles().Result;
+
+            this.RequestCommand = new RelayCommand(RequestAccess);
         }
 
         public ObservableCollection<Systems> SystemsList
@@ -61,6 +67,32 @@ namespace AccessAdmin.Client.ViewModel
                 this.selectedRole = value;
                 this.RaisePropertyChanged();
             }
+        }
+
+        public string ReasonBox
+        {
+            get => this.reasonBox;
+            set
+            {
+                this.reasonBox = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        private void RequestAccess()
+        {
+            var helper = new UserHelper();
+            var id = helper.GetUserByEmail(AdminHelper.UserMail).Result.UserId;
+
+            var request = new Requests
+            {
+                RequestReason = ReasonBox,
+                UserId = new User {  UserId = id },
+                SystemId = new Systems { SystemId = this.SelectedSystem.SystemId },
+                RoleId = new Roles { RoleId = this.SelectedRole.RoleId }
+            };
+
+            helper.MakeRequest(request);
         }
     }
 }

@@ -5,11 +5,14 @@ using System.Data.SqlClient;
 using AccessAdmin.Business.Interfaces;
 using AccessAdmin.Domain.Constants;
 using AccessAdmin.Domain.Model;
+using NLog;
 
 namespace AccessAdmin.Business.Repositories
 {
     public class SystemRepository : ISystemRepository
     {
+        private Logger logger = LogManager.GetCurrentClassLogger();
+
         public List<Systems> GetAllSystems()
         {
             var list = new List<Systems>();
@@ -17,6 +20,8 @@ namespace AccessAdmin.Business.Repositories
             {
                 using (var con = Connection.GetConnection())
                 {
+                    this.logger.Info($"Starting to gather the systems....");
+
                     var cmd = new SqlCommand(Queries.GetAllSystemsQuery, con);
                     con.Open();
                     var reader = cmd.ExecuteReader();
@@ -33,16 +38,18 @@ namespace AccessAdmin.Business.Repositories
                         }
                     }
 
+                    this.logger.Info($"Found {list.Count} systems....");
+
                     reader.Dispose();
                     cmd.Dispose();
                 }
-
-                return list;
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in GetAllSystems - {e}");
             }
+
+            return list;
         }
 
         public Systems GetSystem(int id)
@@ -71,13 +78,13 @@ namespace AccessAdmin.Business.Repositories
                     reader.Dispose();
                     cmd.Dispose();
                 }
-
-                return sys;
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in GetSystem - {e}");
             }
+
+            return sys;
         }
 
         public void CreateSystem(Systems sys)
@@ -95,7 +102,7 @@ namespace AccessAdmin.Business.Repositories
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in CreateSystem - {e}");
             }
         }
 
@@ -115,7 +122,7 @@ namespace AccessAdmin.Business.Repositories
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in UpdateSystem - {e}");
             }
         }
 
@@ -134,7 +141,7 @@ namespace AccessAdmin.Business.Repositories
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in DeleteSystem - {e}");
             }
         }
     }

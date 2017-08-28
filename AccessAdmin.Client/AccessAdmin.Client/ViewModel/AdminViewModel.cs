@@ -9,18 +9,26 @@ namespace AccessAdmin.Client.ViewModel
 {
     public class AdminViewModel : ViewModelBase
     {
+        #region Private fields
         private string systemName;
         private string roleName;
         private Systems selectedSystem;
         private Roles selectedRole;
         private Roles selectedComboRole;
+        private Requests selectedRequest;
+        private RequestStates selectedState;
         private bool isVisible;
         private ObservableCollection<Systems> systemList;
         private ObservableCollection<Roles> roleList;
         private ObservableCollection<Roles> fullRoleList;
+        private ObservableCollection<Requests> requestsList;
+        private ObservableCollection<RequestStates> stateList;
         private SystemHelper systemHelper;
         private RoleHelper roleHelper;
-        
+        private UserHelper userHelper;
+        #endregion
+
+        #region Public commands
         public RelayCommand CreateSystemCommand { get; set; }
         public RelayCommand UpdateSystemCommand { get; set; }
         public RelayCommand DeleteSystemCommand { get; set; }
@@ -28,13 +36,24 @@ namespace AccessAdmin.Client.ViewModel
         public RelayCommand DeleteRoleCommand { get; set; }
         public RelayCommand CreateRoleCommand { get; set; }
         public RelayCommand AssignToSystemCommand { get; set; }
+        public RelayCommand SolveRequestCommand { get; set; }
+        #endregion
 
         public AdminViewModel()
         {
             this.systemHelper = new SystemHelper();
             this.roleHelper = new RoleHelper();
+            this.userHelper = new UserHelper();
+
             this.SystemsList = this.systemHelper.GetSystems().Result;
             this.FullRolesList = this.roleHelper.GetAllRoles().Result;
+            this.RequestsList = this.userHelper.GetRequests().Result;
+
+            this.RequestStatesList = new ObservableCollection<RequestStates>
+            {
+                new RequestStates{ RequestId = 2, RequestName = "Given", RequestState = "20"},
+                new RequestStates{ RequestId = 3, RequestName = "Declined", RequestState = "30"}
+            };
 
             this.CreateSystemCommand = new RelayCommand(CreateSystem);
             this.UpdateSystemCommand = new RelayCommand(UpdateSystem);
@@ -43,6 +62,29 @@ namespace AccessAdmin.Client.ViewModel
             this.DeleteRoleCommand = new RelayCommand(DeleteRolePerSystem);
             this.CreateRoleCommand = new RelayCommand(CreateRole);
             this.AssignToSystemCommand = new RelayCommand(AssignRoleToSystem);
+            this.SolveRequestCommand = new RelayCommand(SolveRequest);
+        }
+
+        #region Public properties
+
+        public ObservableCollection<RequestStates> RequestStatesList
+        {
+            get => this.stateList;
+            set
+            {
+                this.stateList = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public RequestStates SelectedState
+        {
+            get => this.selectedState;
+            set
+            {
+                this.selectedState = value;
+                this.RaisePropertyChanged();
+            }
         }
 
         public string SystemName
@@ -135,6 +177,29 @@ namespace AccessAdmin.Client.ViewModel
             }
         }
 
+        public ObservableCollection<Requests> RequestsList
+        {
+            get => this.requestsList;
+            set
+            {
+                this.requestsList = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public Requests SelectedRequest
+        {
+            get => this.selectedRequest;
+            set
+            {
+                this.selectedRequest = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        #endregion
+
+
+        #region Private methods
         private void CreateSystem()
         {
             var sys = new Systems
@@ -145,6 +210,7 @@ namespace AccessAdmin.Client.ViewModel
             this.systemHelper.CreateSystem(sys);
             MessageBox.Show(
                 $"System {this.SystemName} has been created", "Info");
+            this.SystemName = string.Empty;
         }
 
         private void UpdateSystem()
@@ -182,7 +248,9 @@ namespace AccessAdmin.Client.ViewModel
             };
             this.roleHelper.CreateRole(role);
             MessageBox.Show(
-                $"Role {this.SelectedComboRole.RoleName} has been created", "Info");
+                $"Role {this.RoleName} has been created", "Info");
+            this.FullRolesList = this.roleHelper.GetAllRoles().Result;
+            this.RoleName = string.Empty;
         }
 
         private void AssignRoleToSystem()
@@ -197,5 +265,13 @@ namespace AccessAdmin.Client.ViewModel
             MessageBox.Show(
                 $"Role {this.SelectedComboRole.RoleName} has been assigned to {this.SystemSelected.SystemName}", "Info");
         }
+
+        private void SolveRequest()
+        {
+            this.SelectedRequest.RequestStateId.RequestId = this.SelectedState.RequestId;
+            this.userHelper.SolveRequest(this.SelectedRequest);
+            this.RequestsList.Remove(this.SelectedRequest);
+        }
+        #endregion
     }
 }

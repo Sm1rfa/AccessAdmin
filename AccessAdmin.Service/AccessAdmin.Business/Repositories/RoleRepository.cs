@@ -5,11 +5,14 @@ using System.Data.SqlClient;
 using AccessAdmin.Business.Interfaces;
 using AccessAdmin.Domain.Constants;
 using AccessAdmin.Domain.Model;
+using NLog;
 
 namespace AccessAdmin.Business.Repositories
 {
     public class RoleRepository : IRoleRepository
     {
+        private Logger logger = LogManager.GetCurrentClassLogger();
+
         public List<Roles> GetAllRoles()
         {
             var list = new List<Roles>();
@@ -37,13 +40,13 @@ namespace AccessAdmin.Business.Repositories
                     reader.Dispose();
                     cmd.Dispose();
                 }
-
-                return list;
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in GetAllRoles - {e}");
             }
+
+            return list;
         }
 
         public List<Roles> GetAllPerSystem(int sysId)
@@ -74,13 +77,13 @@ namespace AccessAdmin.Business.Repositories
                     reader.Dispose();
                     cmd.Dispose();
                 }
-
-                return list;
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in GetAllRoles - {e}");
             }
+
+            return list;
         }
 
         public Roles GetSingleRolePerSystem(int sysId, int roleId)
@@ -109,13 +112,13 @@ namespace AccessAdmin.Business.Repositories
                     reader.Dispose();
                     cmd.Dispose();
                 }
-
-                return role;
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in GetSingleRolePerSystem - {e}");
             }
+
+            return role;
         }
 
         public void CreateRole(Roles role)
@@ -133,7 +136,7 @@ namespace AccessAdmin.Business.Repositories
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in CreateRole - {e}");
             }
         }
 
@@ -153,7 +156,7 @@ namespace AccessAdmin.Business.Repositories
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in AssignRoleToSystem - {e}");
             }
         }
 
@@ -174,7 +177,7 @@ namespace AccessAdmin.Business.Repositories
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in UpdateRolePerSystem - {e}");
             }
         }
 
@@ -194,7 +197,7 @@ namespace AccessAdmin.Business.Repositories
             }
             catch (Exception e)
             {
-                throw new Exception(e.StackTrace);
+                this.logger.Error($"Error in DeleteRolePerSystem - {e}");
             }
         }
     }

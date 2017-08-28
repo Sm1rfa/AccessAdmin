@@ -9,7 +9,7 @@
         xmlns:view="clr-namespace:AccessAdmin.Client.View"
         mc:Ignorable="d"
         Title="Access Admin Client" 
-        Height="550" Width="725"
+        Height="550" Width="925"
         BorderBrush="LimeGreen"
         BorderThickness="1"
         WindowStartupLocation="CenterScreen"
@@ -31,7 +31,8 @@
                 <view:AdminView DataContext="{Binding AdminViewModel}"/>
             </TabItem>
         </controls:MetroAnimatedTabControl>
-        
+        <Button Content="Logout" Click="Logout_Click" HorizontalAlignment="Left" Margin="814,466,0,0" VerticalAlignment="Top" Width="75"/>
+
     </Grid>
 </controls:MetroWindow>
 

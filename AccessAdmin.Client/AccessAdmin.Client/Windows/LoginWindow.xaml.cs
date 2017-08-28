@@ -28,7 +28,7 @@ namespace AccessAdmin.Client.Windows
                     return;
                 }
 
-                AdminHelper.AdminMail = this.MailBox.Text;
+                AdminHelper.UserMail = this.MailBox.Text;
 
                 this.DialogResult = true;
             }

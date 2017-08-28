@@ -7,7 +7,7 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="600">
+             d:DesignHeight="500" d:DesignWidth="900">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -15,12 +15,12 @@
 
     <Grid>
         <Label Content="Create System:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox controls:TextBoxHelper.Watermark="system name"  HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="{Binding SystemName}" VerticalAlignment="Top" Width="280"/>
-        <Button Content="Create" Command="{Binding CreateSystemCommand}" HorizontalAlignment="Left" Margin="215,72,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBox controls:TextBoxHelper.Watermark="system name"  HorizontalAlignment="Left" Height="23" Margin="10,41,0,0" TextWrapping="Wrap" Text="{Binding SystemName}" VerticalAlignment="Top" Width="204"/>
+        <Button Content="Create" Command="{Binding CreateSystemCommand}" HorizontalAlignment="Left" Margin="139,72,0,0" VerticalAlignment="Top" Width="75"/>
         <DataGrid ItemsSource="{Binding SystemsList}" SelectedItem="{Binding SystemSelected}" 
                   AutoGenerateColumns="False"
                   HorizontalAlignment="Left" Height="199" 
-                  Margin="10,115,0,0" VerticalAlignment="Top" Width="380">
+                  Margin="10,115,0,0" VerticalAlignment="Top" Width="204">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding SelectedSystemChangedCommand}"/>
@@ -31,28 +31,53 @@
                 <DataGridTextColumn Header="System Name" Binding="{Binding SystemName}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Update" Command="{Binding UpdateSystemCommand}" HorizontalAlignment="Left" Margin="315,319,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="Delete" Command="{Binding DeleteSystemCommand}" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="235,319,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Update" Command="{Binding UpdateSystemCommand}" HorizontalAlignment="Left" Margin="139,319,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Delete" Command="{Binding DeleteSystemCommand}" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="10,319,0,0" VerticalAlignment="Top" Width="75"/>
         <DataGrid HorizontalAlignment="Left" 
                   ItemsSource="{Binding RolesList}"
                   SelectedItem="{Binding SelectedRole}"
                   AutoGenerateColumns="False" 
-                  Height="129" Margin="405,115,-38,0" VerticalAlignment="Top" Width="233">
+                  Height="199" Margin="254,115,0,0" VerticalAlignment="Top" Width="233">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Role Id" Binding="{Binding RoleId}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Role Name" Binding="{Binding RoleName}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Delete" Command="{Binding DeleteRoleCommand}" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="563,249,-38,0" VerticalAlignment="Top" Width="75"/>
-        <Label Content="Create Role:" HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" controls:TextBoxHelper.Watermark="role name" Height="23" Margin="405,41,-38,0" TextWrapping="Wrap" Text="{Binding RoleName}" VerticalAlignment="Top" Width="233"/>
-        <Button Content="Create" Command="{Binding CreateRoleCommand}" HorizontalAlignment="Left" Margin="563,72,-38,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Delete" Command="{Binding DeleteRoleCommand}" Background="Red" Foreground="White" HorizontalAlignment="Left" Margin="412,319,0,0" VerticalAlignment="Top" Width="75"/>
+        <Label Content="Create Role:" HorizontalAlignment="Left" Margin="254,10,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" controls:TextBoxHelper.Watermark="role name" Height="23" Margin="254,41,0,0" TextWrapping="Wrap" Text="{Binding RoleName}" VerticalAlignment="Top" Width="233"/>
+        <Button Content="Create" Command="{Binding CreateRoleCommand}" HorizontalAlignment="Left" Margin="412,72,0,0" VerticalAlignment="Top" Width="75"/>
         <ComboBox ItemsSource="{Binding FullRolesList}"
                   DisplayMemberPath="RoleName"
                   SelectedValue="{Binding SelectedComboRole}"
             HorizontalAlignment="Left" 
-            Margin="405,288,-38,0" VerticalAlignment="Top" Width="233"/>
-        <Button Content="Assign" Command="{Binding AssignToSystemCommand}" HorizontalAlignment="Left" Margin="563,319,-38,0" VerticalAlignment="Top" Width="75" ToolTip="Assign to selected system" />
+            Margin="156,365,0,0" VerticalAlignment="Top" Width="233"/>
+        <Button Content="Assign" Command="{Binding AssignToSystemCommand}" HorizontalAlignment="Left" Margin="314,396,0,0" VerticalAlignment="Top" Width="75" ToolTip="Assign to selected system" />
+        <DataGrid ItemsSource="{Binding RequestsList}"
+                  SelectedItem="{Binding SelectedRequest}"
+                  AutoGenerateColumns="False"
+            HorizontalAlignment="Left" Height="199" 
+            Margin="517,115,0,0" VerticalAlignment="Top" Width="353">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Request Reason" Binding="{Binding RequestReason}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Decision Reason" Binding="{Binding DecisionReason}" />
+                <DataGridTextColumn Header="User Id" Binding="{Binding UserId.UserId}" IsReadOnly="True" />
+                <DataGridTextColumn Header="System" Binding="{Binding SystemId.SystemName}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Role" Binding="{Binding RoleId.RoleName}" IsReadOnly="True" />
+                <!--<DataGridComboBoxColumn Header="Your State" 
+                                        ItemsSource="{Binding RequestStatesList}"
+                                        DisplayMemberPath="RequestName"
+                                        SelectedItemBinding="{Binding SelectedState, Mode=TwoWay}"/>-->
+                <DataGridTextColumn Header="State" Binding="{Binding RequestStateId.RequestName}" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Content="Incoming requests" HorizontalAlignment="Left" Margin="517,41,0,0" VerticalAlignment="Top"/>
+        <Button Content="Solve" Command="{Binding SolveRequestCommand}" HorizontalAlignment="Left" Margin="795,319,0,0" VerticalAlignment="Top" Width="75"/>
+        <ComboBox ItemsSource="{Binding RequestStatesList}"
+                  DisplayMemberPath="RequestName"
+                  SelectedItem="{Binding SelectedState, Mode=TwoWay}"
+            HorizontalAlignment="Left" Margin="750,56,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Select state:" HorizontalAlignment="Left" Margin="750,25,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>
